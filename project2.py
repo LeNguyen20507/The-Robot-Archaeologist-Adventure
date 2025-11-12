@@ -3,15 +3,29 @@
 class Cell:
     # Represents one position in the grid
     
+    cell_types = {"wall", "open", "treasure", "trap", "start", "exit"}
+
     def __init__(self, row, col, cell_type):
-        pass
-        # row, col
-        # types
-        # next
+        if not isinstance(row, int) or not isinstance(col, int):
+            raise ValueError("row and col must be int")
+        if row < 0 or col < 0:
+            raise ValueError("Coordinates must >=0")
+        self.row = row
+        self.col = col
+
+        if not isinstance(cell_type, str):
+            raise ValueError("Cell type must be string")
+        ct = cell_type.strip().lower()
+        if ct not in self.cell_types:
+            raise ValueError("invalid cell type")
+        self.cell_type = ct
+
+        self.next = None
 
     def __str__(self):
         # (row, col) [type]
-        pass
+        cell_desc = f"({self.row}, {self.col}, {self.cell_type})"
+        return cell_desc
 
 class LinkedPath:
     # Singly linked list to store the robot's memory "(visited cells)"
