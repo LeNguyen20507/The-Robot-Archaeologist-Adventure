@@ -28,7 +28,7 @@ class Cell:
         return cell_desc
 
 class LinkedPath:
-    # Singly linked list to store the robot's memory "(visited cells)"
+    # Singly linked list to store the robot's memory (visited cells)
     class Node:
         def __init__(self, cell, next = None):
             self.cell = cell
@@ -63,7 +63,7 @@ class LinkedPath:
             show = str(c)
             path_detail.append(show)
             curr = curr.next
-            
+
         return path_detail
 
 class Grid:
@@ -72,23 +72,62 @@ class Grid:
     def __init__(self, layout):
         # layout: 2D list [row, col]
         # grid: 2D list of Cell objects
-        pass
+        
+        self.rows = len(layout)
+        self.cols = len(layout[0])
+        self.grid = []
+        for i in range(self.rows):
+            row = []
+            for j in range(self.cols):
+                type = self._char_to_type(layout[i][j])
+                new_cell = Cell(i, j, type)
+                row.append(new_cell)
+            self.grid.append(row)
 
     def _char_to_type(self, ch):
-        # Convert layout chars to cell type string
-        pass
+        # Convert layout chars to cell type string - using the legend mapping
+        legend = {"#" : "wall", "." : "open", "T" : "treasure", "X" : "trap", "S" : "start", "E" : "exit"}
+
+        if ch not in legend:
+            raise ValueError("not a valid cell type")
+        else:
+            return legend[ch]
 
     def get_cell(self, row, col):
         # Return the cell at the specific coordinates.
-        pass
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            raise IndexError("Index out of bound")
+        else:
+            return self.grid[row][col]
+    
 
     def is_valid(self, row, col):
         # Return true if the cell is within bounds and not a wall
-        pass
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return False
+        else:
+            return self.grid[row][col].cell_type != "wall"
+        
+    def _type_to_char(self, ch):
+        # Convert layout chars to cell type string - using the legend mapping
+        reverse_legend = {"wall" : "#", "open" : ".", "treasure" : "T", "trap" : "X", "start" : "S", "exit" : "E"}
+
+
+        if ch not in reverse_legend:
+            raise ValueError("not a valid cell type")
+        else:
+            return reverse_legend[ch]
 
     def display(self):
         # Visual representation of the current grid
-        pass
+        for i in range(self.rows):
+            row = ""
+            for j in range(self.cols):
+                cell = self.grid[i][j]
+                row += self._type_to_char(cell.cell_type)
+            print(row)
+            
+        
 
 
 class Robot:
@@ -127,4 +166,3 @@ def main():
     # display robot memory and final stats
 
 # main()
-        
