@@ -66,8 +66,9 @@ class Robot:
             if self.current_cell.cell_type == "treasure":
                 self.treasures += 1
                 self.energy += 1
-                self.current_cell.cell_type  = "open"
                 print(f"Robot {self.name}, found a treasure, total treasure: {self.treasures}, charged 1 energy, total energy: {self.energy}")
+                self.current_cell.cell_type  = "open"
+
             elif self.current_cell.cell_type == "open":
                 if self.energy < 1:
                     print("not enough energy to move")
