@@ -49,7 +49,7 @@ class Robot:
                 else:
                     print("invalid direction")
             else:
-                print("Not enough energy")
+                print("Not enough energy to move, game over!")
                 return moved
 
             if not self.grid.is_valid(row_coordinate, col_coordinate):
@@ -60,25 +60,40 @@ class Robot:
             self.current_cell = self.grid.get_cell(row_coordinate, col_coordinate)
 
             self.path.add_cell(self.current_cell)
-            self.energy -= 1
-
-            print(f"Robot, {self.name}, moved to {self.current_cell} (energy: {self.energy})")
+            
+            #Energy, treasure, trap checking
 
             if self.current_cell.cell_type == "treasure":
                 self.treasures += 1
-                print(f"Robot {self.name}, found a treasure, total: {self.treasures}")
-
-
+                self.energy += 1
+                self.current_cell.cell_type  = "open"
+                print(f"Robot {self.name}, found a treasure, total treasure: {self.treasures}, charged 1 energy, total energy: {self.energy}")
+            elif self.current_cell.cell_type == "open":
+                if self.energy < 1:
+                    print("not enough energy to move")
+                    return moved
+                else: self.energy -= 1
             elif self.current_cell.cell_type == "trap":
-                print(f"Robot {self.name}, fell into the trap, backtracking...")
-                self._backtrack()
+                print(f"Robot {self.name}, fell into the trap, backtracking... (-5 energy)")
+                if self.energy < 5:
+                    self.energy = 0
+                    print("not enough energy to backtrack, your journey ends here")
+                    return moved
+                else:
+                    self.energy -= 5
+                    self._backtrack()
+                    return moved
             elif self.current_cell.cell_type == "exit":
+                if self.energy < 1:
+                    print("not enough energy to move")
+                    return moved
+                else: self.energy -= 1
                 print("exit found!")
+            print(f"Robot, {self.name}, moved to {self.current_cell} (energy: {self.energy})")
                 
             moved = True
             return moved
 
-        
 
 
     def _backtrack(self):
@@ -88,7 +103,7 @@ class Robot:
             self.current_cell = self.path.head.cell
             #Remove newest cell path (which is wall) then move back to previous cell
             info = str(self.current_cell)
-            print(f"Robot, {self.name}, backtracked to {self.current_cell}")
+            print(f"Robot, {self.name}, backtracked to {info}")
             return True
         return False
 
