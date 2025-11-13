@@ -109,7 +109,7 @@ class Grid:
         else:
             return self.grid[row][col].cell_type != "wall"
         
-    def _type_to_char(self, ch):
+    def type_to_char(self, ch):
         # Convert layout chars to cell type string - using the legend mapping
         reverse_legend = {"wall" : "#", "open" : ".", "treasure" : "T", "trap" : "X", "start" : "S", "exit" : "E"}
 
@@ -133,30 +133,95 @@ class Grid:
 
 class Robot:
     def __init__(self, name, grid):
-        pass
-        # name
-        # grid
-        # energy
-        # path (LinkedPath to track visited cells)
-        # current_cell
-        # treasures collected
+        self.name = name
+        
+        if isinstance(grid, Grid):
+            self.grid = grid
+        else:
+            raise TypeError("grid not valid")
+
+        self.energy = 20
+        self.path = LinkedPath()
+        start = self._find_start()
+        if start is None:
+            raise ValueError("Start cell not found")
+        self.current_cell = start
+        self.path.add_cell(start)
 
     def _find_start(self):
-        pass
-        # locate the starting cell
+        for i in range(self.grid.rows):
+            for j in range(self.grid.cols):
+                cell_check = self.grid.get_cell(i,j)
+                if cell_check.cell_type == "start":
+                    self.current_cell = Cell(i, j, "start")
+                    return cell_check
 
     def move(self, direction):
-        # Up down left right
-        # Update energy -1 when move
-        pass
+        moved = False
+        if not isinstance(direction, str):
+            raise ValueError("direction typed not valid")
+        else:
+            direction.strip().lower()
+            row_coordinate = self.current_cell.row
+            col_coordinate = self.current_cell.col
 
-    def backtrack(self):
-        # Undo the last move and update current cell
-        pass
+            if self.energy > 0:
+                if direction == "up":
+                    row_coordinate -= 1
+                elif direction == "down":
+                    row_coordinate += 1
+                elif direction == "left":
+                    col_coordinate -= 1
+                elif direction == "right":
+                    col_coordinate += 1
+                else:
+                    print("invalid direction")
+            else:
+                print("Not enough energy")
+                return moved
+
+            if not self.grid.is_valid(row_coordinate, col_coordinate):
+                print("You cannot move here")
+                return moved
+            
+            temp = self.current_cell
+            self.current_cell = self.grid.get_cell(row_coordinate, col_coordinate)
+            if self.current_cell.cell_type == "wall":
+                print("hit a wall, can not move forward")
+                self.current_cell = temp
+            else:
+                self.path.add_cell(self.current_cell)
+                self.energy -= 1
+
+            print('Moved to', self.current_cell)
+
+            if self.current_cell.cell_type == "trap":
+                print("hit a trap")
+                self._backtrack()
+                
+
+            return moved
+
+        
+
+
+    def _backtrack(self):
+        self.path.remove_last()
+
+        if self.path.head is not None:
+            self.current_cell = self.path.head.cell
+            #Remove newest cell path (which is wall) then move back to previous cell
+            self.energy -= 1
+            print("Backtracked")
+            return True
+        return False
+
+   
+
+
 
     def show_memory(self):
-        # Display the linked path memory
-        pass
+        self.path.show_path()
 
 def main():
     # create 2D list of strings
