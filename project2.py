@@ -9,7 +9,7 @@ def main():
         "#..X.#",
         "#.TX.#",
         "#..XE#",
-        "##X.T#"
+        "##..T#"
     ]
 
     grid = Grid(layout)
@@ -18,16 +18,18 @@ def main():
     print()
     robot = Robot("R-171", grid)
 
-    robot.move("right")
-    robot.move("right")
+    robot.move("up")
+    robot.move("up")
+    robot.move("up")
+    robot.move("down")
+    robot.move("down")
     robot.move("down")
     robot.move("right")
     robot.move("down")
-    robot.move("right")
     robot.move("down")
     robot.move("right")
-    robot.move("down")
-
+    robot.move("right")
+    robot.move("up")
     
     print()
     robot.show_memory()

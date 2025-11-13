@@ -58,10 +58,9 @@ class Robot:
             
 
             self.current_cell = self.grid.get_cell(row_coordinate, col_coordinate)
-
             self.path.add_cell(self.current_cell)
             
-            #Energy, treasure, trap checking
+            #Energy, treasure, trap checking current stepped on cell | note: wall is filtered by is_valid()
 
             if self.current_cell.cell_type == "treasure":
                 self.treasures += 1
@@ -78,6 +77,7 @@ class Robot:
                 if self.energy < 5:
                     self.energy = 0
                     print("not enough energy to backtrack, your journey ends here")
+                    self.path.remove_last()
                     return moved
                 else:
                     self.energy -= 5
@@ -89,10 +89,11 @@ class Robot:
                     return moved
                 else: self.energy -= 1
                 print("exit found!")
+            
             print(f"Robot, {self.name}, moved to {self.current_cell} (energy: {self.energy})")
 
             if self.current_cell.cell_type == "treasure":
-                self.current_cell.cell_type  = "open" #Mark claimed -> open
+                self.current_cell.cell_type  = "open" #Mark claimed treasure to open
 
             moved = True
             return moved
