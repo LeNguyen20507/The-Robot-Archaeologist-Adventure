@@ -87,8 +87,9 @@ class Grid:
     def _char_to_type(self, ch):
         # Convert layout chars to cell type string - using the legend mapping
         legend = {"#" : "wall", "." : "open", "T" : "treasure", "X" : "trap", "S" : "start", "E" : "exit"}
+        
 
-        if ch not in legend:
+        if ch.strip() not in legend:
             raise ValueError("not a valid cell type")
         else:
             return legend[ch]
