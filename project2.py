@@ -128,8 +128,6 @@ class Grid:
                 row += self._type_to_char(cell.cell_type)
             print(row)
             
-        
-
 
 class Robot:
     def __init__(self, name, grid):
@@ -147,6 +145,7 @@ class Robot:
             raise ValueError("Start cell not found")
         self.current_cell = start
         self.path.add_cell(start)
+        self.treasures = 0
 
     def _find_start(self):
         for i in range(self.grid.rows):
@@ -161,7 +160,7 @@ class Robot:
         if not isinstance(direction, str):
             raise ValueError("direction typed not valid")
         else:
-            direction.strip().lower()
+            direction = direction.strip().lower()
             row_coordinate = self.current_cell.row
             col_coordinate = self.current_cell.col
 
@@ -181,25 +180,24 @@ class Robot:
                 return moved
 
             if not self.grid.is_valid(row_coordinate, col_coordinate):
-                print("You cannot move here")
+                print("You cannot move here (wall hit)")
                 return moved
-            
-            temp = self.current_cell
-            self.current_cell = self.grid.get_cell(row_coordinate, col_coordinate)
-            if self.current_cell.cell_type == "wall":
-                print("hit a wall, can not move forward")
-                self.current_cell = temp
-            else:
-                self.path.add_cell(self.current_cell)
-                self.energy -= 1
+                  
+            self.path.add_cell(self.current_cell)
+            self.energy -= 1
 
             print('Moved to', self.current_cell)
 
-            if self.current_cell.cell_type == "trap":
+            if self.current_cell.cell_type == "treasure":
+                self.treasures += 1
+
+            elif self.current_cell.cell_type == "trap":
                 print("hit a trap")
                 self._backtrack()
+            elif self.current_cell.cell_type == "exit":
+                print("exit found!")
                 
-
+            moved = True
             return moved
 
         
@@ -217,11 +215,9 @@ class Robot:
         return False
 
    
-
-
-
     def show_memory(self):
-        self.path.show_path()
+        map_memory = self.path.show_path()
+        print(map_memory)
 
 def main():
     # create 2D list of strings
