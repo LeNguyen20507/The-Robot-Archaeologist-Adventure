@@ -150,7 +150,7 @@ Robot, R-171, moved to (1,2)[open] (energy: 13)
 Robot R-171, fell into the trap, backtracking... (-5 energy)
 Robot, R-171, backtracked to (1,2)[open]
 Robot R-171, found a treasure, total treasure: 1, charged 1 energy, total energy: 9
-Robot, R-171, moved to (2,2)[open] (energy: 9)
+Robot, R-171, moved to (2,2)[treasure] (energy: 9)
 Robot R-171, fell into the trap, backtracking... (-5 energy)
 Robot, R-171, backtracked to (2,2)[open]
 Robot, R-171, moved to (3,2)[open] (energy: 3)

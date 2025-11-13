@@ -67,7 +67,6 @@ class Robot:
                 self.treasures += 1
                 self.energy += 1
                 print(f"Robot {self.name}, found a treasure, total treasure: {self.treasures}, charged 1 energy, total energy: {self.energy}")
-                self.current_cell.cell_type  = "open"
 
             elif self.current_cell.cell_type == "open":
                 if self.energy < 1:
@@ -91,7 +90,10 @@ class Robot:
                 else: self.energy -= 1
                 print("exit found!")
             print(f"Robot, {self.name}, moved to {self.current_cell} (energy: {self.energy})")
-                
+
+            if self.current_cell.cell_type == "treasure":
+                self.current_cell.cell_type  = "open" #Mark claimed -> open
+
             moved = True
             return moved
 
