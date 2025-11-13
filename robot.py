@@ -87,9 +87,8 @@ class Robot:
         if self.path.head is not None:
             self.current_cell = self.path.head.cell
             #Remove newest cell path (which is wall) then move back to previous cell
-            self.energy -= 1
             info = str(self.current_cell)
-            print(f"Robot, {self.name}, backtracked to {self.current_cell} (energy -1), (enery: {self.energy})")
+            print(f"Robot, {self.name}, backtracked to {self.current_cell}")
             return True
         return False
 
