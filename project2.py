@@ -5,11 +5,11 @@ from robot import Robot
 
 def main():
     layout = [
-        "######",
-        "#S.T.#",
-        "#.#.X#",
+        "#S...#",
+        "#..T.#",
+        "#.T.X#",
         "#...E#",
-        "######"
+        "##T.T#"
     ]
 
     grid = Grid(layout)
@@ -25,13 +25,24 @@ def main():
     grid.display((robot.current_cell.row, robot.current_cell.col)) #Extension: show real time position
     print()
 
-    robot.move("right")
+    robot.move("left")
     robot.move("down")
 
     grid.display((robot.current_cell.row, robot.current_cell.col)) #Extension: show real time position
     print()
-    
+
+    robot.move("down")
+    robot.move("down")
+
+    grid.display((robot.current_cell.row, robot.current_cell.col))
+
     robot.move("right")
+    robot.move("right")
+
+    grid.display((robot.current_cell.row, robot.current_cell.col))
+
+    robot.move("up")
+
     
     print()
     robot.show_memory()
