@@ -58,17 +58,19 @@ class Robot:
             
 
             self.current_cell = self.grid.get_cell(row_coordinate, col_coordinate)
-            
+
             self.path.add_cell(self.current_cell)
             self.energy -= 1
 
-            print('Moved to', self.current_cell)
+            print(f"Robot, {self.name}, moved to {self.current_cell} (energy: {self.energy})")
 
             if self.current_cell.cell_type == "treasure":
                 self.treasures += 1
+                print(f"Robot {self.name}, found a treasure, total: {self.treasures}")
+
 
             elif self.current_cell.cell_type == "trap":
-                print("hit a trap")
+                print(f"Robot {self.name}, fell into the trap, backtracking...")
                 self._backtrack()
             elif self.current_cell.cell_type == "exit":
                 print("exit found!")
@@ -86,11 +88,12 @@ class Robot:
             self.current_cell = self.path.head.cell
             #Remove newest cell path (which is wall) then move back to previous cell
             self.energy -= 1
-            print("Backtracked")
+            info = str(self.current_cell)
+            print(f"Robot, {self.name}, backtracked to {self.current_cell} (energy -1), (enery: {self.energy})")
             return True
         return False
 
    
     def show_memory(self):
         map_memory = self.path.show_path()
-        print(map_memory)
+        print("Path memory:", " --> ".join(map_memory))

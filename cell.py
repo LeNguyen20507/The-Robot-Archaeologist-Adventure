@@ -4,11 +4,14 @@ class Cell:
     cell_types = {"wall", "open", "treasure", "trap", "start", "exit"}
 
     def __init__(self, row, col, cell_type):
+        # Preconditions check
         if not isinstance(row, int) or not isinstance(col, int):
             raise ValueError("row and col must be int")
         if row < 0 or col < 0:
             raise ValueError("Coordinates must >=0")
-        self.row = row
+        
+        # row, col is x, y coordinates / counting from (0,0) as top left of square map
+        self.row = row 
         self.col = col
 
         if not isinstance(cell_type, str):
@@ -22,5 +25,5 @@ class Cell:
 
     def __str__(self):
         # (row, col) [type]
-        cell_desc = f"({self.row}, {self.col}, {self.cell_type})"
+        cell_desc = f"({self.row},{self.col})[{self.cell_type}]"
         return cell_desc

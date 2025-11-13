@@ -56,6 +56,7 @@ class Grid:
 
     def display(self):
         # Visual representation of the current grid
+        print("Initial grid: ")
         for i in range(self.rows):
             row = ""
             for j in range(self.cols):
