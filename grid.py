@@ -54,12 +54,15 @@ class Grid:
         else:
             return reverse_legend[ch]
 
-    def display(self):
+    def display(self, pos = None):
         # Visual representation of the current grid
-        print("Initial grid: ")
+        print("Grid:")
         for i in range(self.rows):
             row = ""
             for j in range(self.cols):
-                cell = self.grid[i][j]
-                row += self._type_to_char(cell.cell_type)
+                if pos is not None and pos == (i, j):
+                    row += "R"
+                else:
+                    cell = self.grid[i][j]
+                    row += self._type_to_char(cell.cell_type)
             print(row)

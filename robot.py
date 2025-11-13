@@ -25,8 +25,8 @@ class Robot:
             for j in range(self.grid.cols):
                 cell_check = self.grid.get_cell(i,j)
                 if cell_check.cell_type == "start":
-                    self.current_cell = Cell(i, j, "start")
                     return cell_check
+        return None
 
     def move(self, direction):
         moved = False

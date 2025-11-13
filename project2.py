@@ -21,8 +21,16 @@ def main():
     robot.move("right")
     robot.move("right")
     robot.move("down")
+
+    grid.display((robot.current_cell.row, robot.current_cell.col)) #Extension: show real time position
+    print()
+
     robot.move("right")
     robot.move("down")
+
+    grid.display((robot.current_cell.row, robot.current_cell.col)) #Extension: show real time position
+    print()
+    
     robot.move("right")
     
     print()
